@@ -34,7 +34,7 @@ public class Account {
 
 		if (balance.intValue() < amount.intValue())
 			throw new OperationAmountNotPermit("Insufficient balance");
-		balance = new BigDecimal(balance.intValue() - amount.intValue());
+		balance =balance.subtract(amount);
 		Operation operation = new Operation(OperationType.WITHDRAW, LocalDate.now(), amount);
 		operationList.add(operation);
 	}
