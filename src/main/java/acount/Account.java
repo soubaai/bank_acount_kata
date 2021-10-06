@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
+
 @Data
 public class Account {
 	private BigDecimal balance;
@@ -21,6 +22,8 @@ public class Account {
 	}
 
 	public void deposit(BigDecimal amount) throws OperationAmountNotPermit {
+		if (amount == null)
+			throw new OperationAmountNotPermit("Deposit a null amount is not permitted");
 		if (amount.intValue() < 0)
 			throw new OperationAmountNotPermit("Deposit a negative amount is not permitted");
 		balance = balance.add(amount);
@@ -29,15 +32,16 @@ public class Account {
 	}
 
 	public void withdraw(BigDecimal amount) throws OperationAmountNotPermit {
+		if (amount == null)
+			throw new OperationAmountNotPermit("Withraw a null amount is not permitted");
 		if (amount.intValue() < 0)
 			throw new OperationAmountNotPermit("Withraw a negative amount is not permitted");
 
 		if (balance.intValue() < amount.intValue())
 			throw new OperationAmountNotPermit("Insufficient balance");
-		balance =balance.subtract(amount);
+		balance = balance.subtract(amount);
 		Operation operation = new Operation(OperationType.WITHDRAW, LocalDate.now(), amount);
 		operationList.add(operation);
 	}
-
 
 }

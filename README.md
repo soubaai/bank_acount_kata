@@ -20,6 +20,6 @@ Pour compiler et exécuter l'application, vous avez besoin de:
 
 
 ## Rules :
-- 1- A client can't perform a negative deposit in his account
-- 2- A client can't perform a negative withdrawl in his account
+- 1- A client can't perform a negative or null deposit in his account
+- 2- A client can't perform a negative or null withdrawl in his account
 - 3- If a client try to withdraw an amount higher than the balance of his account, the application should not accept"# bank_acount_kata" 

@@ -26,6 +26,18 @@ public class AccountTest {
 		assertTrue(actualMessage.contains(expectedMessage));
 
 	}
+	
+	@Test
+	public void depositNullAmountTest() {
+		Account acount = new Account();
+		OperationAmountNotPermit operationAmountNotPermit = assertThrows(OperationAmountNotPermit.class, () -> {
+			acount.deposit(null);
+		});
+		String expectedMessage = "Deposit a null amount is not permitted";
+		String actualMessage = operationAmountNotPermit.getMessage();
+		assertTrue(actualMessage.contains(expectedMessage));
+
+	}
 
 	@Test
 	public void depositPositiveFirstAmountTest() throws OperationAmountNotPermit {
@@ -48,6 +60,18 @@ public class AccountTest {
 			acount.withdraw(new BigDecimal(-2l));
 		});
 		String expectedMessage = "Withraw a negative amount is not permitted";
+		String actualMessage = operationAmountNotPermit.getMessage();
+		assertTrue(actualMessage.contains(expectedMessage));
+
+	}
+	
+	@Test
+	public void withdawNullAmountTest() {
+		Account acount = new Account();
+		OperationAmountNotPermit operationAmountNotPermit = assertThrows(OperationAmountNotPermit.class, () -> {
+			acount.withdraw(null);
+		});
+		String expectedMessage = "Withraw a null amount is not permitted";
 		String actualMessage = operationAmountNotPermit.getMessage();
 		assertTrue(actualMessage.contains(expectedMessage));
 
@@ -123,5 +147,7 @@ public class AccountTest {
 		assertEquals(acount.getBalance().intValue(), 200);
 
 	}
+	
+	
 
 }
