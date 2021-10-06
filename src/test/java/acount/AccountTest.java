@@ -51,15 +51,15 @@ public class AccountTest {
 	@Test
 	public void depositPositiveFirstAmountTest() throws OperationAmountNotPermit {
 		Account acount = new Account();
-		acount.deposit(new BigDecimal(20));
-		assertEquals(20, acount.getBalance().intValue());
+		acount.deposit(new BigDecimal(23452.4523434));
+		assertEquals(new BigDecimal(23452.4523434), acount.getBalance());
 	}
 
 	@Test
 	public void depositPositiveAmountTest() throws OperationAmountNotPermit {
-		Account acount = new Account(new BigDecimal(20));
+		Account acount = new Account(new BigDecimal(20000.4523439));
 		acount.deposit(new BigDecimal(10));
-		assertEquals(30, acount.getBalance().intValue());
+		assertEquals(new BigDecimal(20010.45234390000041457824409008026123046875), acount.getBalance());
 	}
 
 	@Test
@@ -88,9 +88,9 @@ public class AccountTest {
 
 	@Test
 	public void withdawInsufficientBalanceTest() {
-		Account acount = new Account(new BigDecimal(20));
+		Account acount = new Account(new BigDecimal(20.9999999999999999999999999999999999999));
 		OperationAmountNotPermit operationAmountNotPermit = assertThrows(OperationAmountNotPermit.class, () -> {
-			acount.withdraw(new BigDecimal(21));
+			acount.withdraw(new BigDecimal(22));
 		});
 		String expectedMessage = "Insufficient balance";
 		String actualMessage = operationAmountNotPermit.getMessage();
@@ -102,47 +102,48 @@ public class AccountTest {
 	public void withdrawAmountTest() throws OperationAmountNotPermit {
 		Account acount = new Account(new BigDecimal(20));
 		acount.withdraw(new BigDecimal(10));
-		assertEquals(10, acount.getBalance().intValue());
+		assertEquals(new BigDecimal(10), acount.getBalance());
 	}
+	
 
 	@Test
 	public void withdrawAllTest() throws OperationAmountNotPermit {
-		Account acount = new Account(new BigDecimal(20));
-		acount.withdraw(new BigDecimal(20));
-		assertEquals(0, acount.getBalance().intValue());
+		Account acount = new Account(new BigDecimal("200000000000000000000000000000000000"));
+		acount.withdraw(new BigDecimal("200000000000000000000000000000000000"));
+		assertEquals(new BigDecimal(0), acount.getBalance());
 	}
 
 	@Test
 	public void showOpertionsHistoryTest() throws OperationAmountNotPermit {
-		Account acount = new Account(new BigDecimal(100));
+		Account acount = new Account(new BigDecimal("200000000000000000000000000000000000.33333367"));
 		acount.deposit(new BigDecimal(100));
 		acount.withdraw(new BigDecimal(10));
-		acount.deposit(new BigDecimal(20));
+		acount.deposit(new BigDecimal(20000.298));
 		acount.withdraw(new BigDecimal(10l));
 
 		assertEquals(acount.getOperationList().size(), 4);
 		// First operation
-		assertEquals(acount.getOperationList().get(0).getAmount().intValue(), 100);
+		assertEquals(acount.getOperationList().get(0).getAmount(), new BigDecimal(100));
 		assertEquals(acount.getOperationList().get(0).getOperationType(), OperationType.DEPOSIT);
 		assertEquals(acount.getOperationList().get(0).getDate(), LOCAL_DATE);
 
 		// Second operation
-		assertEquals(acount.getOperationList().get(1).getAmount().intValue(), 10);
+		assertEquals(acount.getOperationList().get(1).getAmount(), new BigDecimal(10));
 		assertEquals(acount.getOperationList().get(1).getOperationType(), OperationType.WITHDRAW);
 		assertEquals(acount.getOperationList().get(1).getDate(), LOCAL_DATE);
 
 		// Third operation
-		assertEquals(acount.getOperationList().get(2).getAmount().intValue(), 20);
+		assertEquals(acount.getOperationList().get(2).getAmount(), new BigDecimal(20000.298));
 		assertEquals(acount.getOperationList().get(2).getOperationType(), OperationType.DEPOSIT);
 		assertEquals(acount.getOperationList().get(2).getDate(), LOCAL_DATE);
 
 		// Fourth operation
-		assertEquals(acount.getOperationList().get(3).getAmount().intValue(), 10);
+		assertEquals(acount.getOperationList().get(3).getAmount(), new BigDecimal(10));
 		assertEquals(acount.getOperationList().get(3).getOperationType(), OperationType.WITHDRAW);
 		assertEquals(acount.getOperationList().get(3).getDate(), LOCAL_DATE);
 
 		// Balance of the account
-		assertEquals(acount.getBalance().intValue(), 200);
+		assertEquals(acount.getBalance(), new BigDecimal("200000000000000000000000000000020080.63133366999886495061218738555908203125"));
 
 	}
 
