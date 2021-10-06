@@ -7,13 +7,22 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({ LocalDate.class, Account.class })
 public class AccountTest {
 	private final static LocalDate LOCAL_DATE = LocalDate.of(2021, 10, 05);
 
+	@Before
+	public void setUp() {
+		PowerMockito.stub(PowerMockito.method(LocalDate.class, "now")).toReturn(LOCAL_DATE);
+	}
 
 	@Test
 	public void depositNegativeAmountTest() {
@@ -26,7 +35,7 @@ public class AccountTest {
 		assertTrue(actualMessage.contains(expectedMessage));
 
 	}
-	
+
 	@Test
 	public void depositNullAmountTest() {
 		Account acount = new Account();
@@ -64,7 +73,7 @@ public class AccountTest {
 		assertTrue(actualMessage.contains(expectedMessage));
 
 	}
-	
+
 	@Test
 	public void withdawNullAmountTest() {
 		Account acount = new Account();
@@ -112,42 +121,29 @@ public class AccountTest {
 		acount.withdraw(new BigDecimal(10l));
 
 		assertEquals(acount.getOperationList().size(), 4);
-
 		// First operation
 		assertEquals(acount.getOperationList().get(0).getAmount().intValue(), 100);
 		assertEquals(acount.getOperationList().get(0).getOperationType(), OperationType.DEPOSIT);
-		try (MockedStatic<LocalDate> topDateTimeUtilMock = Mockito.mockStatic(LocalDate.class)) {
-			topDateTimeUtilMock.when(() -> LocalDate.now()).thenReturn(LOCAL_DATE);
-			assertEquals(acount.getOperationList().get(0).getDate(), LOCAL_DATE);
-		}
+		assertEquals(acount.getOperationList().get(0).getDate(), LOCAL_DATE);
 
 		// Second operation
 		assertEquals(acount.getOperationList().get(1).getAmount().intValue(), 10);
 		assertEquals(acount.getOperationList().get(1).getOperationType(), OperationType.WITHDRAW);
-		try (MockedStatic<LocalDate> topDateTimeUtilMock = Mockito.mockStatic(LocalDate.class)) {
-			topDateTimeUtilMock.when(() -> LocalDate.now()).thenReturn(LOCAL_DATE);
-			assertEquals(acount.getOperationList().get(1).getDate(), LOCAL_DATE);
-		}
+		assertEquals(acount.getOperationList().get(1).getDate(), LOCAL_DATE);
+
 		// Third operation
 		assertEquals(acount.getOperationList().get(2).getAmount().intValue(), 20);
 		assertEquals(acount.getOperationList().get(2).getOperationType(), OperationType.DEPOSIT);
-		try (MockedStatic<LocalDate> topDateTimeUtilMock = Mockito.mockStatic(LocalDate.class)) {
-			topDateTimeUtilMock.when(() -> LocalDate.now()).thenReturn(LOCAL_DATE);
-			assertEquals(acount.getOperationList().get(2).getDate(), LOCAL_DATE);
-		}
+		assertEquals(acount.getOperationList().get(2).getDate(), LOCAL_DATE);
+
 		// Fourth operation
 		assertEquals(acount.getOperationList().get(3).getAmount().intValue(), 10);
 		assertEquals(acount.getOperationList().get(3).getOperationType(), OperationType.WITHDRAW);
-		try (MockedStatic<LocalDate> topDateTimeUtilMock = Mockito.mockStatic(LocalDate.class)) {
-			topDateTimeUtilMock.when(() -> LocalDate.now()).thenReturn(LOCAL_DATE);
-			assertEquals(acount.getOperationList().get(3).getDate(), LOCAL_DATE);
-		}
+		assertEquals(acount.getOperationList().get(3).getDate(), LOCAL_DATE);
 
 		// Balance of the account
 		assertEquals(acount.getBalance().intValue(), 200);
 
 	}
-	
-	
 
 }
